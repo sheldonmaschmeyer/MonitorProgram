@@ -1,0 +1,20 @@
+DOT := $(shell command -v mutt 2> /dev/null)
+all: ConfigMonitor.o RealTimeMonitor.o Filesort.o
+ifndef DOT
+	$(error "mutt is a dependency, please install and configure mutt email program")
+endif
+	gcc -o ConfigMonitor ConfigMonitor.o
+	gcc -pthread -o RealTimeMonitor RealTimeMonitor.o
+	gcc -o Filesort Filesort.o
+	
+MonitorAll.o: ConfigMonitor.c
+	gcc -c ConfigMonitor.c
+
+RealTimeMonitor.o: RealTimeMonitor.c
+	gcc -c RealTimeMonitor.c
+
+Filesort.o: Filesort.c
+	gcc -c Filesort.c
+
+clean:
+	rm -f *.o ConfigMonitor RealTimeMonitor Filesort
